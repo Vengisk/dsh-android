@@ -90,7 +90,7 @@ class InstallFragment : Fragment() {
         uninstallBtn.setOnClickListener {
             c?.proot?.uninstall()
             Toast.makeText(requireContext(), "已清除环境", Toast.LENGTH_SHORT).show()
-            refreshStatus()
+            refreshStepsAndStatus()
         }
 
         copyBtn.setOnClickListener {
@@ -109,7 +109,7 @@ class InstallFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (c != null) refreshStatus()
+        if (c != null) refreshStepsAndStatus()
     }
 
     override fun onDestroyView() {
@@ -151,8 +151,7 @@ class InstallFragment : Fragment() {
         installBtn.isEnabled = !running
         for (b in stepButtons) b.isEnabled = !running
         uninstallBtn.isEnabled = !running
-        refreshSteps()
-        refreshStatus()
+        refreshStepsAndStatus()
         if (cc.isAwaitingSourceChoice()) showSourceDialog()
     }
 
@@ -182,8 +181,11 @@ class InstallFragment : Fragment() {
             .show()
     }
 
-    /** 更新 4 个组件的状态图标与文案（无编号，已安装=绿勾，未安装=叉） */
-    private fun refreshSteps() {
+    /**
+     * 后台检测 4 个组件安装状态并更新 UI。
+     * isStepDone(STEP_TOOLS) 会同步启动 proot 进程，不能在主线程执行，否则 ANR。
+     */
+    private fun refreshStepsAndStatus() {
         val cc = c ?: return
         val steps = intArrayOf(
             HarnessController.STEP_ROOTFS,
@@ -191,35 +193,35 @@ class InstallFragment : Fragment() {
             HarnessController.STEP_NODE,
             HarnessController.STEP_HARNESS
         )
-        val names = arrayOf("Linux 环境（rootfs）", "基础工具（apt）", "Node.js", "deepseek-harness")
-        for (i in steps.indices) {
-            val step = steps[i]
-            val done = cc.isStepDone(step)
-            icons[i].setImageResource(if (done) R.drawable.ic_installed else R.drawable.ic_not_installed)
-            stepStatusTexts[i].text = if (done) "已就绪" else "未安装"
-            stepButtons[i].text = if (done) "重装" else "安装"
-        }
-    }
-
-    private fun refreshStatus() {
-        val cc = c ?: return
-        var done = 0
-        for (s in HarnessController.STEP_ROOTFS..HarnessController.STEP_HARNESS) {
-            if (cc.isStepDone(s)) done++
-        }
-        when (done) {
-            4 -> {
-                statusText.text = "✅ 全部就绪\n\n可到「启动」页启动 Web UI。"
-                installBtn.text = "重新安装"
+        Thread {
+            val done = BooleanArray(steps.size)
+            for (i in steps.indices) {
+                done[i] = cc.isStepDone(steps[i])
             }
-            0 -> {
-                statusText.text = "尚未安装\n\n一键安装 = 按顺序自动装好 4 个组件；也可在下方单独安装。\n（约需 5~15 分钟，请保持网络畅通）"
-                installBtn.text = "一键安装"
+            val doneCount = done.count { it }
+            val act = activity ?: return@Thread
+            act.runOnUiThread {
+                if (!isAdded || cc.busy) return@runOnUiThread
+                for (i in steps.indices) {
+                    icons[i].setImageResource(if (done[i]) R.drawable.ic_installed else R.drawable.ic_not_installed)
+                    stepStatusTexts[i].text = if (done[i]) "已就绪" else "未安装"
+                    stepButtons[i].text = if (done[i]) "重装" else "安装"
+                }
+                when (doneCount) {
+                    4 -> {
+                        statusText.text = "✅ 全部就绪\n\n可到「启动」页启动 Web UI。"
+                        installBtn.text = "重新安装"
+                    }
+                    0 -> {
+                        statusText.text = "尚未安装\n\n一键安装 = 按顺序自动装好 4 个组件；也可在下方单独安装。\n（约需 5~15 分钟，请保持网络畅通）"
+                        installBtn.text = "一键安装"
+                    }
+                    else -> {
+                        statusText.text = "已完成 $doneCount/4 个组件，可一键补装剩余步骤。"
+                        installBtn.text = "一键补装剩余"
+                    }
+                }
             }
-            else -> {
-                statusText.text = "已完成 $done/4 个组件，可一键补装剩余步骤。"
-                installBtn.text = "一键补装剩余"
-            }
-        }
+        }.start()
     }
 }

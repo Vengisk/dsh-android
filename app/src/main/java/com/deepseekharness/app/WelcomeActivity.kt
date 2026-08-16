@@ -75,8 +75,11 @@ class WelcomeActivity : AppCompatActivity() {
         Math.round(resources.displayMetrics.density * value)
 
     private fun finishWelcome() {
+        // 必须用 commit() 同步落盘：apply() 是异步写盘，若 MainActivity 崩溃触发
+        // CrashCatcher 同步 killProcess，进程被杀时 apply 的写盘可能被丢弃，
+        // 导致 welcomed 未持久化 → 重启又回引导页 → 死循环
         getSharedPreferences("deepseekharness", MODE_PRIVATE)
-            .edit().putBoolean("welcomed", true).apply()
+            .edit().putBoolean("welcomed", true).commit()
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
