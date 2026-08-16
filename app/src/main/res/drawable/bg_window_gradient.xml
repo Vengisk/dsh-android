@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 浅色：樱色柔和渐变背景，为半透明卡片提供“背后可透”的玻璃质感 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="135"
+        android:startColor="#FFE9ECEF"
+        android:centerColor="#FFFFF8F7"
+        android:endColor="#FFF6E7EA" />
+</shape>

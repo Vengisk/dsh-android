@@ -10,189 +10,324 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingStart="20dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="28dp">
 
+        <!-- 标题 -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="6dp"
             android:text="安装模块"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="22sp"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="26sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="6dp"
+            android:lineSpacingExtra="2dp"
             android:text="proot + Ubuntu + deepseek-harness 一键部署"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="13sp" />
 
-        <!-- 状态卡片 -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="1dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:id="@+id/install_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="4dp"
-                    android:textColor="?attr/colorOnSurface"
-                    android:textSize="16sp" />
-
-                <ProgressBar
-                    android:id="@+id/install_progressbar"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:max="100"
-                    android:progressTint="?attr/colorPrimary"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/install_progress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/install_error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="?attr/colorErrorContainer"
-                    android:padding="12dp"
-                    android:textColor="?attr/colorOnErrorContainer"
-                    android:textIsSelectable="true"
-                    android:textSize="13sp"
-                    android:visibility="gone" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/install_copy"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="复制报错内容"
-                    android:textColor="?attr/colorPrimary"
-                    android:visibility="gone" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- 一键安装主按钮 -->
+        <!-- 顶部半透明一键安装按钮 -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/install_btn"
+            style="@style/Widget.DeepseekHarness.GlassButton.Primary"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="22dp"
             android:text="一键安装"
             android:textSize="16sp"
-            android:textStyle="bold"
-            app:cornerRadius="14dp" />
+            android:textStyle="bold" />
 
-        <!-- 分步安装卡片 -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- 半透明悬浮窗格：逐项状态列表 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:strokeColor="?attr/colorOutlineVariant"
-            app:strokeWidth="1dp">
+            android:layout_marginTop="18dp"
+            android:background="@drawable/bg_glass_window"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="14dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="2dp"
+                android:text="组件状态"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <!-- rootfs -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/install_steps"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/step1_icon"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:contentDescription="安装状态"
+                    android:src="@drawable/ic_not_installed" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:lineSpacingExtra="6dp"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="14sp" />
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/step1_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Linux 环境（rootfs）"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/step1_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="未安装"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/install_step1"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="match_parent"
+                    style="@style/Widget.DeepseekHarness.GlassButton.Item"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="① Linux 环境（rootfs）"
-                    app:cornerRadius="12dp" />
+                    android:text="安装" />
+            </LinearLayout>
+
+            <!-- 基础工具 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/step2_icon"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:contentDescription="安装状态"
+                    android:src="@drawable/ic_not_installed" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/step2_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="基础工具（apt）"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/step2_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="未安装"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/install_step2"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="match_parent"
+                    style="@style/Widget.DeepseekHarness.GlassButton.Item"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="② 基础工具（apt）"
-                    app:cornerRadius="12dp" />
+                    android:text="安装" />
+            </LinearLayout>
+
+            <!-- Node.js -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/step3_icon"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:contentDescription="安装状态"
+                    android:src="@drawable/ic_not_installed" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/step3_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Node.js"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/step3_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="未安装"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/install_step3"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="match_parent"
+                    style="@style/Widget.DeepseekHarness.GlassButton.Item"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="③ Node.js"
-                    app:cornerRadius="12dp" />
+                    android:text="安装" />
+            </LinearLayout>
+
+            <!-- deepseek-harness -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/step4_icon"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:contentDescription="安装状态"
+                    android:src="@drawable/ic_not_installed" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/step4_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="deepseek-harness"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/step4_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:text="未安装"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="12sp" />
+                </LinearLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/install_step4"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="match_parent"
+                    style="@style/Widget.DeepseekHarness.GlassButton.Item"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="④ deepseek-harness"
-                    app:cornerRadius="12dp" />
+                    android:text="安装" />
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <!-- 危险操作 -->
+            <!-- 全局进度 -->
+            <TextView
+                android:id="@+id/install_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="2dp"
+                android:lineSpacingExtra="3dp"
+                android:text="等待操作"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="13sp" />
+
+            <ProgressBar
+                android:id="@+id/install_progressbar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_marginTop="10dp"
+                android:max="100"
+                android:progressTint="?attr/colorPrimary"
+                android:progressBackgroundTint="?attr/colorOutlineVariant"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/install_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/install_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="?attr/colorErrorContainer"
+                android:padding="12dp"
+                android:textColor="?attr/colorOnErrorContainer"
+                android:textIsSelectable="true"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/install_copy"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="复制报错内容"
+                android:textColor="?attr/colorError"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <!-- 清除环境（危险操作） -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/install_uninstall"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="清除环境"
-            android:textColor="?attr/colorError"
-            app:backgroundTint="?attr/colorErrorContainer"
-            app:cornerRadius="14dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="24dp"
-            android:lineSpacingExtra="5dp"
-            android:text="安装流程（分 4 步，可单独安装/重装/更新）：\n① Linux 环境：proot + Ubuntu rootfs（约 30MB）\n② 基础工具：apt 换国内源 + curl/git/python3/make/xz\n③ Node.js：v24.19.0\n④ deepseek-harness：预构建包 或 直连 GitHub 源码构建\n\n每个下载源都有多个镜像，自动测速选最快；\n每一步都能单独重装，比如只更新 deepseek-harness 就点第 4 步。\n第 4 步可选「直连 GitHub 源码构建」：不走预构建包，\n直接从 GitHub 克隆源码并用 pnpm 构建（较慢但最稳）。\n\n全程约 5~15 分钟，请保持网络与屏幕常亮。"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:textSize="13sp" />
+            android:layout_marginTop="14dp"
+            android:text="清除环境（重装）"
+            android:textColor="?attr/colorError" />
     </LinearLayout>
 </ScrollView>

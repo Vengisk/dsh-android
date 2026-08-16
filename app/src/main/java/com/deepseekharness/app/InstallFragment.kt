@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -16,22 +17,22 @@ import androidx.annotation.Nullable
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 
-/** 安装模块：分步安装（rootfs / 基础工具 / Node / harness），多源测速，一键补装 */
+/** 安装模块：玻璃拟态 UI，分步安装（rootfs / 基础工具 / Node / harness），多源测速，一键补装 */
 class InstallFragment : Fragment() {
 
     private var c: HarnessController? = null
     private lateinit var statusText: TextView
     private lateinit var progressText: TextView
     private lateinit var errorText: TextView
-    private lateinit var stepStatusText: TextView
     private lateinit var installBtn: Button
     private lateinit var uninstallBtn: Button
     private lateinit var copyBtn: Button
-    private lateinit var step1Btn: Button
-    private lateinit var step2Btn: Button
-    private lateinit var step3Btn: Button
-    private lateinit var step4Btn: Button
     private lateinit var progressBar: ProgressBar
+
+    // 4 个组件的状态图标 + 状态文字
+    private lateinit var icons: Array<ImageView>
+    private lateinit var stepStatusTexts: Array<TextView>
+    private lateinit var stepButtons: Array<Button>
     private var sourceDialog: AlertDialog? = null
 
     private val stateListener = HarnessController.StateListener { refreshFromState() }
@@ -47,15 +48,29 @@ class InstallFragment : Fragment() {
         statusText = view.findViewById(R.id.install_status)
         progressText = view.findViewById(R.id.install_progress)
         errorText = view.findViewById(R.id.install_error)
-        stepStatusText = view.findViewById(R.id.install_steps)
         installBtn = view.findViewById(R.id.install_btn)
         uninstallBtn = view.findViewById(R.id.install_uninstall)
         copyBtn = view.findViewById(R.id.install_copy)
         progressBar = view.findViewById(R.id.install_progressbar)
-        step1Btn = view.findViewById(R.id.install_step1)
-        step2Btn = view.findViewById(R.id.install_step2)
-        step3Btn = view.findViewById(R.id.install_step3)
-        step4Btn = view.findViewById(R.id.install_step4)
+
+        icons = arrayOf(
+            view.findViewById(R.id.step1_icon),
+            view.findViewById(R.id.step2_icon),
+            view.findViewById(R.id.step3_icon),
+            view.findViewById(R.id.step4_icon)
+        )
+        stepStatusTexts = arrayOf(
+            view.findViewById(R.id.step1_status),
+            view.findViewById(R.id.step2_status),
+            view.findViewById(R.id.step3_status),
+            view.findViewById(R.id.step4_status)
+        )
+        stepButtons = arrayOf(
+            view.findViewById(R.id.install_step1),
+            view.findViewById(R.id.install_step2),
+            view.findViewById(R.id.install_step3),
+            view.findViewById(R.id.install_step4)
+        )
 
         c?.addStateListener(stateListener)
 
@@ -67,10 +82,10 @@ class InstallFragment : Fragment() {
             c?.install()
         }
 
-        step1Btn.setOnClickListener { c?.installStep(HarnessController.STEP_ROOTFS) }
-        step2Btn.setOnClickListener { c?.installStep(HarnessController.STEP_TOOLS) }
-        step3Btn.setOnClickListener { c?.installStep(HarnessController.STEP_NODE) }
-        step4Btn.setOnClickListener { c?.installStep(HarnessController.STEP_HARNESS) }
+        stepButtons[0].setOnClickListener { c?.installStep(HarnessController.STEP_ROOTFS) }
+        stepButtons[1].setOnClickListener { c?.installStep(HarnessController.STEP_TOOLS) }
+        stepButtons[2].setOnClickListener { c?.installStep(HarnessController.STEP_NODE) }
+        stepButtons[3].setOnClickListener { c?.installStep(HarnessController.STEP_HARNESS) }
 
         uninstallBtn.setOnClickListener {
             c?.proot?.uninstall()
@@ -134,10 +149,7 @@ class InstallFragment : Fragment() {
         }
         val running = cc.busy
         installBtn.isEnabled = !running
-        step1Btn.isEnabled = !running
-        step2Btn.isEnabled = !running
-        step3Btn.isEnabled = !running
-        step4Btn.isEnabled = !running
+        for (b in stepButtons) b.isEnabled = !running
         uninstallBtn.isEnabled = !running
         refreshSteps()
         refreshStatus()
@@ -170,29 +182,23 @@ class InstallFragment : Fragment() {
             .show()
     }
 
-    /** 更新 4 个步骤的状态显示 */
+    /** 更新 4 个组件的状态图标与文案（无编号，已安装=绿勾，未安装=叉） */
     private fun refreshSteps() {
-        step1Btn.text = stepLabel(HarnessController.STEP_ROOTFS)
-        step2Btn.text = stepLabel(HarnessController.STEP_TOOLS)
-        step3Btn.text = stepLabel(HarnessController.STEP_NODE)
-        step4Btn.text = stepLabel(HarnessController.STEP_HARNESS)
-        stepStatusText.text =
-            "① Linux 环境（rootfs）   " + mark(HarnessController.STEP_ROOTFS) + "\n" +
-                "② 基础工具（apt）       " + mark(HarnessController.STEP_TOOLS) + "\n" +
-                "③ Node.js               " + mark(HarnessController.STEP_NODE) + "\n" +
-                "④ deepseek-harness      " + mark(HarnessController.STEP_HARNESS)
-    }
-
-    private fun mark(step: Int): String {
-        val cc = c ?: return "⬜ 未安装"
-        if (cc.busy && cc.currentStep == step) return "⏳ 进行中"
-        return if (cc.isStepDone(step)) "✅ 已就绪" else "⬜ 未安装"
-    }
-
-    private fun stepLabel(step: Int): String {
-        val cc = c ?: return HarnessController.stepName(step)
-        val name = HarnessController.stepName(step)
-        return if (cc.isStepDone(step)) "重装 $name" else "安装 $name"
+        val cc = c ?: return
+        val steps = intArrayOf(
+            HarnessController.STEP_ROOTFS,
+            HarnessController.STEP_TOOLS,
+            HarnessController.STEP_NODE,
+            HarnessController.STEP_HARNESS
+        )
+        val names = arrayOf("Linux 环境（rootfs）", "基础工具（apt）", "Node.js", "deepseek-harness")
+        for (i in steps.indices) {
+            val step = steps[i]
+            val done = cc.isStepDone(step)
+            icons[i].setImageResource(if (done) R.drawable.ic_installed else R.drawable.ic_not_installed)
+            stepStatusTexts[i].text = if (done) "已就绪" else "未安装"
+            stepButtons[i].text = if (done) "重装" else "安装"
+        }
     }
 
     private fun refreshStatus() {
@@ -201,15 +207,19 @@ class InstallFragment : Fragment() {
         for (s in HarnessController.STEP_ROOTFS..HarnessController.STEP_HARNESS) {
             if (cc.isStepDone(s)) done++
         }
-        if (done == 4) {
-            statusText.text = "✅ 全部安装完成\n\n可到「启动」页启动 Web UI。"
-            installBtn.text = "重新安装（补装缺失步骤）"
-        } else if (done > 0) {
-            statusText.text = "🔄 已完成 $done/4 步，可一键补装剩余步骤。"
-            installBtn.text = "一键安装剩余步骤"
-        } else {
-            statusText.text = "📦 尚未安装\n\n点击下方按钮：\n一键安装 = 按顺序补装 4 个步骤\n也可单独安装某一步\n（约需 5~15 分钟，请保持网络畅通）"
-            installBtn.text = "一键安装"
+        when (done) {
+            4 -> {
+                statusText.text = "✅ 全部就绪\n\n可到「启动」页启动 Web UI。"
+                installBtn.text = "重新安装"
+            }
+            0 -> {
+                statusText.text = "尚未安装\n\n一键安装 = 按顺序自动装好 4 个组件；也可在下方单独安装。\n（约需 5~15 分钟，请保持网络畅通）"
+                installBtn.text = "一键安装"
+            }
+            else -> {
+                statusText.text = "已完成 $done/4 个组件，可一键补装剩余步骤。"
+                installBtn.text = "一键补装剩余"
+            }
         }
     }
 }

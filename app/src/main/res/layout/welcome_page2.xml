@@ -45,13 +45,13 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-                <TextView
+                <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:background="@drawable/welcome_step_bg"
-                    android:gravity="center"
-                    android:text="🛠"
-                    android:textSize="24sp" />
+                    android:scaleType="center"
+                    android:src="@drawable/ic_install"
+                    android:contentDescription="安装" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -96,13 +96,13 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-                <TextView
+                <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:background="@drawable/welcome_step_bg"
-                    android:gravity="center"
-                    android:text="▶️"
-                    android:textSize="24sp" />
+                    android:scaleType="center"
+                    android:src="@drawable/ic_launch"
+                    android:contentDescription="启动" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -147,13 +147,13 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-                <TextView
+                <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:background="@drawable/welcome_step_bg"
-                    android:gravity="center"
-                    android:text="⚙️"
-                    android:textSize="24sp" />
+                    android:scaleType="center"
+                    android:src="@drawable/ic_config"
+                    android:contentDescription="配置" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -198,13 +198,13 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-                <TextView
+                <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:background="@drawable/welcome_step_bg"
-                    android:gravity="center"
-                    android:text="📁"
-                    android:textSize="24sp" />
+                    android:scaleType="center"
+                    android:src="@drawable/ic_workspace"
+                    android:contentDescription="工作区" />
 
                 <LinearLayout
                     android:layout_width="0dp"

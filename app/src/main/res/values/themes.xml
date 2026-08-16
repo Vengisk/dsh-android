@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--
-        DynamicColors：Android 12+（API 31+）自动跟随壁纸取色（Material You）；
-        API 30 及以下回退到下方补全的 M3 色板（浅色 values / 深色 values-night）。
+        RikkaHub Sakura 固定色板（浅色 values / 深色 values-night），
+        父主题保留 DynamicColors，API 31+ 若不在下方覆盖则以壁纸动态配色为参考，
+        下方显式映射保证 Sakura 色板在全部 Android 版本上一致呈现。
     -->
     <style name="Theme.DeepseekHarness" parent="Theme.Material3.DynamicColors.DayNight">
-        <!-- material 1.11.0 的 DynamicColors 系列没有 NoActionBar 变体，手动禁用 ActionBar -->
+        <!-- 禁用 ActionBar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <!-- 玻璃拟态：窗口背景 = 柔和渐变，半透明卡片叠加其上 -->
+        <item name="android:windowBackground">@drawable/bg_window_gradient</item>
 
         <!-- Primary -->
         <item name="colorPrimary">@color/primary</item>
@@ -45,31 +49,63 @@
         <item name="colorOutline">@color/outline</item>
         <item name="colorOutlineVariant">@color/outlineVariant</item>
 
-        <!-- Surface containers（Material 1.11.0 卡片/导航底色） -->
+        <!-- Surface containers -->
         <item name="colorSurfaceContainerLowest">@color/surfaceContainerLowest</item>
         <item name="colorSurfaceContainerLow">@color/surfaceContainerLow</item>
         <item name="colorSurfaceContainer">@color/surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/surfaceContainerHighest</item>
 
-        <!-- 状态栏 / 导航栏跟随主题 -->
+        <!-- 状态栏 / 导航栏透明，玻璃渐变透出 -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
         <item name="android:windowLightNavigationBar">?attr/isLightTheme</item>
-        <item name="android:windowBackground">@color/background</item>
 
-        <!-- 底部导航选中指示器：圆角胶囊 -->
+        <!-- 底部导航：半透明玻璃底 + 胶囊指示器 -->
         <item name="bottomNavigationStyle">@style/Widget.DeepseekHarness.BottomNavigation</item>
+
+        <!-- 玻璃按钮全局默认 -->
+        <item name="materialButtonStyle">@style/Widget.DeepseekHarness.GlassButton.Primary</item>
+    </style>
+
+    <!-- 主操作玻璃按钮：半透明樱色底，按压加深 -->
+    <style name="Widget.DeepseekHarness.GlassButton" parent="Widget.Material3.Button">
+        <item name="android:stateListAnimator">@null</item>
+        <item name="cornerRadius">18dp</item>
+    </style>
+
+    <style name="Widget.DeepseekHarness.GlassButton.Primary">
+        <item name="backgroundTint">@color/glass_btn_tint</item>
+        <item name="rippleColor">?attr/colorOutline</item>
+        <item name="android:textColor">@color/glass_btn_text</item>
+    </style>
+
+    <!-- 逐项安装小按钮：半透明描边 -->
+    <style name="Widget.DeepseekHarness.GlassButton.Item" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:stateListAnimator">@null</item>
+        <item name="cornerRadius">14dp</item>
+        <item name="strokeColor">@color/glass_stroke</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="rippleColor">?attr/colorOutline</item>
+        <item name="android:paddingStart">18dp</item>
+        <item name="android:paddingEnd">18dp</item>
+        <item name="android:minWidth">88dp</item>
+        <item name="android:minHeight">44dp</item>
     </style>
 
     <style name="Widget.DeepseekHarness.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/glass_bottomnav</item>
+        <item name="android:elevation">0dp</item>
         <item name="itemActiveIndicatorStyle">@style/Widget.DeepseekHarness.BottomNavigation.ActiveIndicator</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="itemIconTint">@color/bottom_nav_tint</item>
+        <item name="itemTextColor">@color/bottom_nav_tint</item>
     </style>
 
     <style name="Widget.DeepseekHarness.BottomNavigation.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/primaryContainer</item>
-        <item name="marginHorizontal">16dp</item>
+        <item name="android:color">@attr/colorPrimaryContainer</item>
+        <item name="marginHorizontal">18dp</item>
         <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
     </style>
 </resources>

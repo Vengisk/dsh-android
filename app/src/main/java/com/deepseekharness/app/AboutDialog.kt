@@ -16,7 +16,7 @@ object AboutDialog {
     fun show(ctx: Context) {
         var version = "1.0.6"
         try {
-            version = ctx.packageManager.getPackageInfo(ctx.packageName, 0).versionName
+            version = ctx.packageManager.getPackageInfo(ctx.packageName, 0).versionName ?: "1.0.6"
         } catch (ignored: Exception) {
         }
         AlertDialog.Builder(ctx)

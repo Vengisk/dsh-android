@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.deepseekharness.app'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.dsh.client"
         minSdk 26
-        targetSdk 34
+        targetSdk 35
         versionCode 15
         versionName "1.0.12"
         // 面向 ARM64 设备（deepseek-harness 的 node-pty 等原生模块需 arm64）

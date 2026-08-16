@@ -1,45 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 深色模式兜底色板（API 31- / 未启用动态取色时使用） -->
-    <color name="primary">#BEC2FF</color>
-    <color name="onPrimary">#182695</color>
-    <color name="primaryContainer">#2E3FC3</color>
-    <color name="onPrimaryContainer">#DFE0FF</color>
+    <!-- ============ RikkaHub Sakura 预设色板（深色） ============ -->
+    <color name="primary">#FFB2BC</color>
+    <color name="onPrimary">#561D28</color>
+    <color name="primaryContainer">#72333E</color>
+    <color name="onPrimaryContainer">#FFD9DD</color>
 
-    <color name="secondary">#C4C5DD</color>
-    <color name="onSecondary">#2D2F42</color>
-    <color name="secondaryContainer">#44455A</color>
-    <color name="onSecondaryContainer">#E0E1F9</color>
+    <color name="secondary">#E7BDB8</color>
+    <color name="onSecondary">#442925</color>
+    <color name="secondaryContainer">#5D3F3B</color>
+    <color name="onSecondaryContainer">#FFD9DD</color>
 
-    <color name="tertiary">#E7B9D9</color>
-    <color name="onTertiary">#442638</color>
-    <color name="tertiaryContainer">#5D3C54</color>
-    <color name="onTertiaryContainer">#FFD7F1</color>
+    <color name="tertiary">#E0C38B</color>
+    <color name="onTertiary">#3F2E04</color>
+    <color name="tertiaryContainer">#574417</color>
+    <color name="onTertiaryContainer">#FDE0A5</color>
 
     <color name="error">#FFB4AB</color>
     <color name="onError">#690005</color>
     <color name="errorContainer">#93000A</color>
     <color name="onErrorContainer">#FFDAD6</color>
 
-    <color name="background">#131318</color>
-    <color name="onBackground">#E4E1E9</color>
-    <color name="surface">#131318</color>
-    <color name="onSurface">#E4E1E9</color>
-    <color name="surfaceVariant">#45464F</color>
-    <color name="onSurfaceVariant">#C6C5D0</color>
-    <color name="outline">#90909A</color>
-    <color name="outlineVariant">#45464F</color>
+    <color name="background">#1A1112</color>
+    <color name="onBackground">#F0DEDF</color>
+    <color name="surface">#1A1112</color>
+    <color name="onSurface">#F0DEDF</color>
+    <color name="surfaceVariant">#524345</color>
+    <color name="onSurfaceVariant">#D6C2C4</color>
+    <color name="outline">#9F8B8D</color>
+    <color name="outlineVariant">#524345</color>
 
-    <color name="surfaceContainerLowest">#0E0E13</color>
-    <color name="surfaceContainerLow">#1B1B21</color>
-    <color name="surfaceContainer">#1F1F25</color>
-    <color name="surfaceContainerHigh">#292930</color>
-    <color name="surfaceContainerHighest">#34343B</color>
+    <color name="surfaceContainerLowest">#140C0D</color>
+    <color name="surfaceContainerLow">#22191A</color>
+    <color name="surfaceContainer">#261D1E</color>
+    <color name="surfaceContainerHigh">#312828</color>
+    <color name="surfaceContainerHighest">#3D3233</color>
 
     <color name="scrim">#000000</color>
 
+    <!-- ============ 玻璃拟态（Glassmorphism）专用色 ============ -->
+    <color name="glass_bg">#B31A1112</color>
+    <color name="glass_card">#59FFFFFF</color>
+    <color name="glass_card_strong">#6631322E</color>
+    <color name="glass_stroke">#26FFFFFF</color>
+    <color name="glass_stroke_soft">#33FFB2BC</color>
+    <color name="glass_scrim_gradient_start">#30111018</color>
+    <color name="glass_scrim_gradient_end">#F21A1112</color>
+    <color name="glass_btn_bg">#E6FFB2BC</color>
+    <color name="glass_btn_bg_press">#B3FFB2BC</color>
+    <color name="glass_btn_text">#561D28</color>
+    <color name="glass_bottomnav">#E61A1112</color>
+
     <!-- 业务色 -->
-    <color name="primary_dark">#BEC2FF</color>
+    <color name="primary_dark">#FFB2BC</color>
     <color name="accent">#63E08B</color>
     <color name="accent_container">#155C2D</color>
     <color name="on_accent_container">#B7F5C9</color>
