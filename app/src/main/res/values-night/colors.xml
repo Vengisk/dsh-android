@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 深色模式兜底色板（API 31- / 未启用动态取色时使用） -->
+    <color name="primary">#BEC2FF</color>
+    <color name="onPrimary">#182695</color>
+    <color name="primaryContainer">#2E3FC3</color>
+    <color name="onPrimaryContainer">#DFE0FF</color>
+
+    <color name="secondary">#C4C5DD</color>
+    <color name="onSecondary">#2D2F42</color>
+    <color name="secondaryContainer">#44455A</color>
+    <color name="onSecondaryContainer">#E0E1F9</color>
+
+    <color name="tertiary">#E7B9D9</color>
+    <color name="onTertiary">#442638</color>
+    <color name="tertiaryContainer">#5D3C54</color>
+    <color name="onTertiaryContainer">#FFD7F1</color>
+
+    <color name="error">#FFB4AB</color>
+    <color name="onError">#690005</color>
+    <color name="errorContainer">#93000A</color>
+    <color name="onErrorContainer">#FFDAD6</color>
+
+    <color name="background">#131318</color>
+    <color name="onBackground">#E4E1E9</color>
+    <color name="surface">#131318</color>
+    <color name="onSurface">#E4E1E9</color>
+    <color name="surfaceVariant">#45464F</color>
+    <color name="onSurfaceVariant">#C6C5D0</color>
+    <color name="outline">#90909A</color>
+    <color name="outlineVariant">#45464F</color>
+
+    <color name="surfaceContainerLowest">#0E0E13</color>
+    <color name="surfaceContainerLow">#1B1B21</color>
+    <color name="surfaceContainer">#1F1F25</color>
+    <color name="surfaceContainerHigh">#292930</color>
+    <color name="surfaceContainerHighest">#34343B</color>
+
+    <color name="scrim">#000000</color>
+
+    <!-- 业务色 -->
+    <color name="primary_dark">#BEC2FF</color>
+    <color name="accent">#63E08B</color>
+    <color name="accent_container">#155C2D</color>
+    <color name="on_accent_container">#B7F5C9</color>
+</resources>
