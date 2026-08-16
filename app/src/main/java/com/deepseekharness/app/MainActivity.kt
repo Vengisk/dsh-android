@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CrashCatcher.install(this)
 
         // 首次启动进入引导页
         val prefs = getSharedPreferences("deepseekharness", MODE_PRIVATE)

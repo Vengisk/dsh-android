@@ -27,6 +27,7 @@ class WelcomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CrashCatcher.install(this)
         setContentView(R.layout.activity_welcome)
 
         pager = findViewById(R.id.welcome_pager)
